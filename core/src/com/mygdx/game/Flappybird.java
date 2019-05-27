@@ -34,8 +34,8 @@ public class Flappybird extends ApplicationAdapter {
 	//private ShapeRenderer shape;
 
 	//Atributos de configuracao
-	private int larguraDispositivo;
-	private int alturaDispositivo;
+	private float larguraDispositivo;
+	private float alturaDispositivo;
 	private int estadoJogo;
 	private int pontuacao = 0;
 
@@ -85,10 +85,11 @@ public class Flappybird extends ApplicationAdapter {
 
 		//Camera
 		camera = new OrthographicCamera();
+		camera.position.set(VIRTUAL_WIDTH / 2,VIRTUAL_HEIGHT / 2,0);
 		viewport = new StretchViewport(VIRTUAL_WIDTH,VIRTUAL_HEIGHT,camera);
 
-		larguraDispositivo= Gdx.graphics.getWidth();
-		alturaDispositivo= Gdx.graphics.getHeight();
+		larguraDispositivo= VIRTUAL_WIDTH;
+		alturaDispositivo= VIRTUAL_HEIGHT;
 		posicaoInicialVertical =  alturaDispositivo / 2;
 		posicaoMovimentoCanoHorizontal = larguraDispositivo;
 		espacoEntreCanos =250;
@@ -96,6 +97,12 @@ public class Flappybird extends ApplicationAdapter {
 
 	@Override
 	public void render () {
+
+		camera.update();
+
+		//Limpar frames anteriores
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_COLOR_BUFFER_BIT);
+
 		deltaTime = Gdx.graphics.getDeltaTime();
 
 		variacao += deltaTime * 10;
@@ -150,6 +157,7 @@ public class Flappybird extends ApplicationAdapter {
 
 			}
 		}
+			batch.setProjectionMatrix(camera.combined);
 
 			batch.begin();
 
